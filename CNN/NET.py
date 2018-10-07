@@ -16,7 +16,7 @@ class Net(nn.Module):
                                  #圖片高度
                                  in_channels = 1,
                                  #提取幾個特徵
-                                 out_channels = 6,
+                                 out_channels = 16,
                                  #捲積核大小
                                  kernel_size = 5,
                                  #掃描一次跳幾格
@@ -120,7 +120,7 @@ def plot_with_labels(lowDWeights, labels):
         c = cm.rainbow(int(255 * s / 9)); plt.text(x, y, s, backgroundcolor=c, fontsize=9)
     plt.xlim(X.min(), X.max()); plt.ylim(Y.min(), Y.max()); plt.title('Visualize last layer'); plt.show(); plt.pause(0.01)
     
-def input_image(model, image):
+def input_image(model, image, device):
     model.eval()
     k = image.view(1, 1, 28, 28)
     x, y = model(k.cuda())
@@ -134,7 +134,7 @@ def main():
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--batch_size', type=int, default=640, metavar='N')
     parser.add_argument('--test_batch_size', type=int, default=2000, metavar='N')
-    parser.add_argument('--epochs', type=int, default=5, metavar='N')
+    parser.add_argument('--epochs', type=int, default=10, metavar='N')
     parser.add_argument('--lr', type=float, default=0.01, metavar='LR')
     parser.add_argument('--momentum', type=float, default=0.5, metavar='M')
     parser.add_argument('--no_cuda', action='store_true', default=False)
@@ -166,25 +166,30 @@ def main():
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ]))
-#    model = Net().to(device)
-    model = torch.load('net1.pkl').to(device)   #讀取
+    model = Net().to(device)
+#    model = torch.load('net1.pkl').to(device)   #讀取
 #    plt.ion()    
 #============== Train & Test ==============
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, betas = (0.9, 0.99), eps=1e-08, weight_decay=0)
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, betas = (0.9, 0.99), eps=1e-04, weight_decay=0)
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
         test(args, model, device, test_loader, epoch)
-        torch.save(model, 'net1.pkl')      #存取
+    torch.save(model, 'net1.pkl')      #存取
 #==========================================
 #    plt.ioff()
-    
 #============== Test image ==============  
 #    img, label = test_set[0]
-#    print(img.shape) # (h,w,c)
+#    img = cv2.imread('3.jpg')
+#    img = img.transpose(2,0,1)
+#    img = img[0].transpose(0, 1)
+#    img = np.expand_dims(img, axis=0)
+#    img = np.expand_dims(img, axis=0)
 #    first_train_img = np.reshape(img, (28, 28))
 #    plt.matshow(first_train_img, cmap = plt.get_cmap('gray'))
 #    plt.show()
-#    input_image(model, img)
+#    img = torch.from_numpy(img).float().to(device)
+##    print(type(img))
+#    input_image(model, img, device)
 #==========================================
 if __name__ == '__main__':
     main()
