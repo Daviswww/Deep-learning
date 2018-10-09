@@ -171,6 +171,7 @@ def main():
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
             batch_size = args.test_batch_size, shuffle=True, **kwargs)  # 把任意數目的字典數傳入
+    #測試圖
     test_set = datasets.MNIST('../data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
@@ -186,8 +187,7 @@ def main():
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
         #如果test_loss<0.04則停止訓練
-        if test(args, model, device, test_loader) < 0.04:
-           break
+        test(args, model, device, test_loader, epoch)
 #   存取神經網路
     torch.save(model, 'net1.pkl')      
 #==========================================
