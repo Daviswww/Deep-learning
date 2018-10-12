@@ -6,8 +6,8 @@ Numpy:
 conda install -c anaconda numpy
 CUDA:
 conda install -c anaconda cudatoolkit
-Pytorch 0.4.1:
-conda install pytorch=4.1.0 -c soumith
+PyTorch 0.4.1:
+conda install pytorch=0.4.1 -c soumith
 Matplotlib:
 conda install -c conda-forge matplotlib
 Torchvision:
