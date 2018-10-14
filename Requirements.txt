@@ -14,3 +14,9 @@ Torchvision:
 conda install torchvision -c pytorch
 argparse:
 conda install -c anaconda argparse
+fire:
+conda install -c conda-forge fire
+ipdb:
+conda install -c conda-forge ipdb
+tqdm:
+conda install -c conda-forge tqdm
