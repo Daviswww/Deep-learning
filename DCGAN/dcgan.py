@@ -55,9 +55,7 @@ def weights_init_normal(m):
 class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()
-        #??
         self.init_size = opt.img_size // 4
-        #??
         self.l1 = nn.Sequential(nn.Linear(opt.latent_dim, 128*self.init_size**2))
 
         self.conv_blocks = nn.Sequential(
@@ -85,7 +83,6 @@ class Generator(nn.Module):
                     #當設置為True，則輸入和輸出張量的角點像素對齊，從而保留這些像素的值。當設置為False，這僅當具有效果mode是線性，雙線性或三線性。
                     align_corners = None
                     ),
-            #
             nn.Conv2d(
                     #張量（minibatch * in_channels * iH * iW）
                     128, 
